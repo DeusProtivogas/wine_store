@@ -1,31 +1,43 @@
+import os
 import datetime
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from jinja2 import Environment, FileSystemLoader, select_autoescape
+from dotenv import load_dotenv
 
 from year_declension import decline_year
-from wine_aggregator import get_wine_dict
+from wine_aggregator import get_wine_sorts
 
-wine_sorts = get_wine_dict()
 
-env = Environment(
-    loader=FileSystemLoader('.'),
-    autoescape=select_autoescape(['html', 'xml']),
-)
-first_year = new_year = datetime.datetime(year=1920, month=1, day=1, hour=0)
+def main():
+    load_dotenv()
+    file_path = os.getenv("FILE_PATH", default="wine.xlsx")
+    wine_sorts = get_wine_sorts(file_path)
 
-template = env.get_template('template.html')
+    env = Environment(
+        loader=FileSystemLoader('.'),
+        autoescape=select_autoescape(['html', 'xml']),
+    )
+    CREATION_YEAR = 1920
 
-years = int((datetime.datetime.today() - first_year).days // 365.25)
-years_text = decline_year(years)
+    template = env.get_template('template.html')
 
-rendered_page = template.render(
-    years=years,
-    years_text=years_text,
-    wine_sorts=wine_sorts,
-)
+    current_year = datetime.datetime.today().year
 
-with open('index.html', 'w', encoding="utf8") as file:
-    file.write(rendered_page)
+    years_passed = (current_year - CREATION_YEAR)
+    years_text = decline_year(years_passed)
 
-server = HTTPServer(('0.0.0.0', 8000), SimpleHTTPRequestHandler)
-server.serve_forever()
+    rendered_page = template.render(
+        years=years_passed,
+        years_text=years_text,
+        wine_sorts=wine_sorts,
+    )
+
+    with open('index.html', 'w', encoding="utf8") as file:
+        file.write(rendered_page)
+
+    server = HTTPServer(('0.0.0.0', 8000), SimpleHTTPRequestHandler)
+    server.serve_forever()
+
+
+if __name__ == "__main__":
+    main()
