@@ -17,13 +17,13 @@ def main():
         loader=FileSystemLoader('.'),
         autoescape=select_autoescape(['html', 'xml']),
     )
-    CREATION_YEAR = 1920
+    creation_year = 1920
 
     template = env.get_template('template.html')
 
     current_year = datetime.datetime.today().year
 
-    years_passed = (current_year - CREATION_YEAR)
+    years_passed = current_year - creation_year
     years_text = decline_year(years_passed)
 
     rendered_page = template.render(
