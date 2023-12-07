@@ -14,8 +14,6 @@ pip install -r requirements.txt
 1. Поместить `.env` в той же папке, что и `main.py`
 2. `.env` содержит значения без кавычек
 
-1. Put `.env` file near `main.py`.
-2. `.env` contains text data without quotes.
 
 ## Подготовка данных
 
