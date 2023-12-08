@@ -9,14 +9,6 @@ def get_wine_sorts(file_path):
     wine_bottles = excel_data_df.to_dict(orient='records')
 
     for bottle in wine_bottles:
-        # temp_dict = defaultdict(str)
-        # temp_dict["Название"] = bottle["Название"]
-        # temp_dict["Сорт"] = bottle["Сорт"]
-        # temp_dict["Цена"] = bottle["Цена"]
-        # temp_dict["Картинка"] = bottle["Картинка"]
-        # temp_dict["Акция"] = bottle["Акция"]
-        # wine_sorts[bottle["Категория"]].append(temp_dict)
-
         wine_sorts[bottle["Категория"]].append(
             defaultdict(
                 str,
